@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -66,8 +67,12 @@ import com.calendly.compose.ui.theme.SoftBlue
 import com.calendly.compose.ui.widget.backbutton.BackButtonWidget
 import com.calendly.compose.ui.widget.button.ButtonWidget
 import com.calendly.compose.ui.widget.inforow.InfoRowWidget
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -88,13 +93,11 @@ internal fun ConfirmBookingScreen(
         viewModel.uiEvent.collectLatest { event ->
             when (event) {
                 is ConfirmBookingUiEvent.ShowGenericError -> {
-                    val message = getString(Res.string.generic_error)
-                    scaffoldState.snackbarHostState.showSnackbar(message)
+                    scaffoldState.showSnackBar(message = Res.string.generic_error, duration = 3000L)
                 }
 
-                ConfirmBookingUiEvent.ScheduleEventSucceed -> {
-                    val message = getString(Res.string.schedule_event_success_message)
-                    scaffoldState.snackbarHostState.showSnackbar(message)
+                is ConfirmBookingUiEvent.ScheduleEventSucceed -> {
+                    scaffoldState.showSnackBar(message = Res.string.schedule_event_success_message)
                     onSuccess()
                 }
             }
@@ -275,4 +278,20 @@ private fun SpannableTermsAndPrivacyTextWidget() {
         )
     }
     Text(text = annotatedString)
+}
+
+private suspend fun ScaffoldState.showSnackBar(
+    message: StringResource,
+    duration: Long = 1000L,
+) {
+    coroutineScope {
+        val job = launch {
+            snackbarHostState.showSnackbar(
+                message = getString(message),
+                duration = SnackbarDuration.Indefinite,
+            )
+        }
+        delay(duration)
+        job.cancel()
+    }
 }
