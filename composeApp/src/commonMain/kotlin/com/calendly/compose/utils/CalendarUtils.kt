@@ -29,13 +29,6 @@ internal object CalendarUtils {
         return instant.toLocalDateTime(timeZone)
     }
 
-    /**
-     * Returns a list of abbreviated English day-of-week names starting from Sunday.
-     *
-     * Example output: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-     *
-     * @return A list of abbreviated day names in English, starting from Sunday.
-     */
     fun daysOfWeekNames(): List<String> {
         return DayOfWeekNames.ENGLISH_ABBREVIATED.names
     }

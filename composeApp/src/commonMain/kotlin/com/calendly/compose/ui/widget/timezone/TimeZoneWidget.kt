@@ -1,6 +1,5 @@
 package com.calendly.compose.ui.widget.timezone
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +35,6 @@ internal fun TimeZoneWidget(
     Column(
         modifier = modifier
             .clip(CircleShape)
-            .clickable { }
             .padding(vertical = 8.dp, horizontal = 12.dp),
         horizontalAlignment = Alignment.Start,
     ) {
@@ -61,12 +58,6 @@ internal fun TimeZoneWidget(
                 color = Color.NavyBlue,
                 fontWeight = FontWeight.Normal,
                 style = MaterialTheme.typography.body2,
-            )
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                tint = Color.NavyBlue,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
             )
         }
     }

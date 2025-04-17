@@ -34,6 +34,8 @@ import com.calendly.compose.ui.widget.loading.LoadingDotsWidget
 import com.calendly.compose.utils.CalendarUtils
 import com.calendly.compose.utils.CalendarUtils.isToday
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.number
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -78,6 +80,8 @@ internal fun CalendarWidget(
     ) {
         CalendarHeaderWidget(
             headerText = "${CalendarUtils.getMonthName(uiState.month)} ${uiState.year}",
+            disableNextButton = uiState.month == Month.DECEMBER.number,
+            disablePreviousButton = uiState.month == Month.JANUARY.number,
             onPreviousMonthClick = onPreviousMonthClick,
             onNextMonthClick = onNextMonthClick,
         )
@@ -93,15 +97,20 @@ internal fun CalendarWidget(
 @Composable
 private fun CalendarHeaderWidget(
     headerText: String,
+    disableNextButton: Boolean = true,
+    disablePreviousButton: Boolean = true,
     onPreviousMonthClick: () -> Unit = {},
     onNextMonthClick: () -> Unit = {},
 ) {
     Row {
         IconButton(
             onClick = onPreviousMonthClick,
+            enabled = !disablePreviousButton,
             content = {
                 Icon(
-                    tint = Color.SemiTransparentDarkGray,
+                    tint = Color.SemiTransparentDarkGray.run {
+                        if (disablePreviousButton) copy(alpha = 0.2F) else this
+                    },
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = null,
                 )
@@ -118,9 +127,12 @@ private fun CalendarHeaderWidget(
         )
         IconButton(
             onClick = onNextMonthClick,
+            enabled = !disableNextButton,
             content = {
                 Icon(
-                    tint = Color.SemiTransparentDarkGray,
+                    tint = Color.SemiTransparentDarkGray.run {
+                        if (disableNextButton) copy(alpha = 0.2F) else this
+                    },
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
                 )
