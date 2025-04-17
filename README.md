@@ -1,14 +1,34 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Compose Multiplatform Calendly
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+A Compose Multiplatform implementation that rebuilds the core UI of a meeting scheduling app like Calendly, with support for Android and iOS.
+This project serves as a hands-on showcase of how to build cross-platform UIs using modern Kotlin tools.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## 🎥 Demo Video
+Check out a short demo of the UI in action on both platforms:
 
+| iOS                                          | Android                                              |
+|----------------------------------------------|------------------------------------------------------|
+| <img src="art/ios-demo.gif" alt="ios-demo"/> | <img src="art/android-demo.gif" alt="android-demo"/> | 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## 🚀 Features
+- Cross-platform UI using Jetpack Compose Multiplatform
+- Seamless support for Android and iOS
+- Rebuild of the core scheduling experience: availability view, time slot selection, and booking confirmation
+- Clean architecture and modularized UI components
+
+## 🛠️ Tech Stack & Libraries
+Library | Description
+🔗 kotlinx-datetime | Modern date and time handling across platforms
+🌐 ktor | Asynchronous networking and API calls
+🖼️ Coil | Image loading
+
+## 📱 Platforms
+- ✅ Android
+- ✅ iOS
+- ❌ Desktop/Web (can be added in the future)
+
+## 💡 Motivation
+The goal of this project is to demystify Compose Multiplatform development, especially for those who want to build production-grade, cross-platform UIs using a unified codebase.
+
+## 🙌 Contributing
+Contributions are welcome! Feel free to fork, open issues, or create pull requests.
