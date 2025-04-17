@@ -17,10 +17,9 @@ Check out a short demo of the UI in action on both platforms:
 - Clean architecture and modularized UI components
 
 ## 🛠️ Tech Stack & Libraries
-Library | Description
-🔗 kotlinx-datetime | Modern date and time handling across platforms
-🌐 ktor | Asynchronous networking and API calls
-🖼️ Coil | Image loading
+🔗 kotlinx-datetime: Modern date and time handling across platforms
+🌐 ktor: Asynchronous networking and API calls
+🖼️ Coil: Image loading
 
 ## 📱 Platforms
 - ✅ Android
