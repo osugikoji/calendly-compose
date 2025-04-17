@@ -6,9 +6,9 @@ This project serves as a hands-on showcase of how to build cross-platform UIs us
 ## 🎥 Demo Video
 Check out a short demo of the UI in action on both platforms:
 
-| iOS                                                      | Android                                                          |
-|----------------------------------------------------------|------------------------------------------------------------------|
-| <img src="art/ios-demo.gif" alt="ios-demo" width="300"/> | <img src="art/android-demo.gif" alt="android-demo" width="300"/> | 
+| iOS                                                                   | Android                                                                       |
+|-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| <img src="art/ios-demo.gif" alt="ios-demo" width="300" height="480"/> | <img src="art/android-demo.gif" alt="android-demo" width="300" height="480"/> | 
 
 ## 🚀 Features
 - Cross-platform UI using Jetpack Compose Multiplatform
