@@ -19,14 +19,18 @@ import kotlinx.datetime.toLocalDateTime
 
 internal object CalendarUtils {
 
-    val currentTimeZone get() = TimeZone.currentSystemDefault()
+    // Backing field
+    private var _timeZone: TimeZone? = null
 
-    fun parseToLocalDateTime(
-        isoString: String,
-        timeZone: TimeZone = currentTimeZone,
-    ): LocalDateTime {
-        val instant = Instant.parse(isoString)
-        return instant.toLocalDateTime(timeZone)
+    val currentTimeZone: TimeZone
+        get() = _timeZone ?: TimeZone.currentSystemDefault()
+
+    fun setTimeZone(timeZone: TimeZone) {
+        _timeZone = timeZone
+    }
+
+    fun resetTestTimeZone() {
+        _timeZone = null
     }
 
     fun daysOfWeekNames(): List<String> {
@@ -55,18 +59,27 @@ internal object CalendarUtils {
         return calendarDays
     }
 
-    fun getCurrentYear(timeZone: TimeZone = currentTimeZone): Int {
-        val now = Clock.System.now().toLocalDateTime(timeZone)
+    fun getCurrentYear(
+        timeZone: TimeZone = currentTimeZone,
+        clock: Clock = Clock.System,
+    ): Int {
+        val now = clock.now().toLocalDateTime(timeZone)
         return now.date.year
     }
 
-    fun getCurrentMonth(timeZone: TimeZone = currentTimeZone): Int {
-        val now = Clock.System.now().toLocalDateTime(timeZone)
+    fun getCurrentMonth(
+        timeZone: TimeZone = currentTimeZone,
+        clock: Clock = Clock.System,
+    ): Int {
+        val now = clock.now().toLocalDateTime(timeZone)
         return now.date.monthNumber
     }
 
-    fun getTimeZoneDisplay(timeZone: TimeZone = currentTimeZone): String {
-        val nowInstant = Clock.System.now()
+    fun getTimeZoneDisplay(
+        timeZone: TimeZone = currentTimeZone,
+        clock: Clock = Clock.System,
+    ): String {
+        val nowInstant = clock.now()
         val localDateTime = nowInstant.toLocalDateTime(timeZone)
         // Format the time as HH:mm
         val formattedTime = localDateTime.formatAsHourMinute()
@@ -74,10 +87,16 @@ internal object CalendarUtils {
         return "${timeZone.id} ($formattedTime)"
     }
 
+    fun String.parseToLocalDateTime(timeZone: TimeZone = currentTimeZone): LocalDateTime {
+        val instant = Instant.parse(this)
+        return instant.toLocalDateTime(timeZone)
+    }
+
     fun List<LocalDateTime>.filterFutureDates(
         timeZone: TimeZone = currentTimeZone,
+        clock: Clock = Clock.System,
     ): List<LocalDateTime> {
-        val now = Clock.System.now().toLocalDateTime(timeZone)
+        val now = clock.now().toLocalDateTime(timeZone)
         return this.filter { it > now }
     }
 
