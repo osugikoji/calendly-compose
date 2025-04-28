@@ -3,8 +3,11 @@ package com.calendly.compose.screen.scheduleday
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calendly.compose.data.repository.BookingRepository
-import com.calendly.compose.utils.CalendarUtils
+import com.calendly.compose.data.repository.impl.BookingRepositoryImpl
 import com.calendly.compose.utils.CalendarUtils.filterFutureDates
+import com.calendly.compose.utils.CalendarUtils.parseToLocalDateTime
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +17,8 @@ import kotlinx.datetime.LocalDateTime
 
 internal class ScheduleDayViewModel(
     private val interviewerUserId: String,
-    private val bookingRepository: BookingRepository = BookingRepository(),
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    private val bookingRepository: BookingRepository = BookingRepositoryImpl(),
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ScheduleDayUiState())
@@ -26,13 +30,13 @@ internal class ScheduleDayViewModel(
         getData()
     }
 
-    fun onNextMonthClick() = viewModelScope.launch {
+    fun onNextMonthClick() = viewModelScope.launch(dispatcher) {
         val currentMonth = uiState.value.currentMonth + 1
         _uiState.update { it.copy(currentMonth = currentMonth, availableDaysOfMonth = emptyList()) }
         fetchFutureAvailabilities()
     }
 
-    fun onPreviousMonthClick() = viewModelScope.launch {
+    fun onPreviousMonthClick() = viewModelScope.launch(dispatcher) {
         val currentMonth = uiState.value.currentMonth - 1
         _uiState.update { it.copy(currentMonth = currentMonth, availableDaysOfMonth = emptyList()) }
         fetchFutureAvailabilities()
@@ -42,7 +46,7 @@ internal class ScheduleDayViewModel(
         return availabilities.filter { it.dayOfMonth == day.toInt() }
     }
 
-    private fun getData() = viewModelScope.launch {
+    private fun getData() = viewModelScope.launch(dispatcher) {
         fetchInterviewerUser()
         fetchFutureAvailabilities()
     }
@@ -62,7 +66,7 @@ internal class ScheduleDayViewModel(
         availabilities = bookingRepository
             .getAvailabilities(month = uiState.value.currentMonth)
             .getOrDefault(emptyList())
-            .map { CalendarUtils.parseToLocalDateTime(it) }
+            .map { it.parseToLocalDateTime() }
             .filterFutureDates()
         val availableDaysOfMonth = availabilities.map { it.dayOfMonth.toString() }.distinct()
         _uiState.update { it.copy(isLoading = false, availableDaysOfMonth = availableDaysOfMonth) }

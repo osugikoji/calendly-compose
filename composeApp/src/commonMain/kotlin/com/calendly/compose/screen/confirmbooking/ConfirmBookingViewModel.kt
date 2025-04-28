@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calendly.compose.data.model.ScheduleEvent
 import com.calendly.compose.data.repository.BookingRepository
+import com.calendly.compose.data.repository.impl.BookingRepositoryImpl
 import com.calendly.compose.utils.CalendarUtils
 import com.calendly.compose.utils.CalendarUtils.formatInterviewSlot
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +19,7 @@ import kotlinx.datetime.LocalDateTime
 internal class ConfirmBookingViewModel(
     private val interviewerUserId: String,
     private val selectedDateTime: LocalDateTime,
-    private val bookingRepository: BookingRepository = BookingRepository(),
+    private val bookingRepository: BookingRepository = BookingRepositoryImpl(),
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ConfirmBookingUiState())
